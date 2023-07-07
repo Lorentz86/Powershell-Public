@@ -6,7 +6,7 @@ $TemplateName = "SHP-Template"
 $OU = (Get-ADGroup $TemplateName -Properties Description).DistinguishedName -replace "CN=$TemplateName,",""
 $OU = $OU -replace "CN=$TemplateName,",""
 
-$SharePointGroups = @("Beheer","Leden","Bezoeker")
+$SharePointGroups = @("Beheer","Leden","Bezoeker,Moderator")
 
 foreach($SPGroup in $SharePointGroups)
 {
