@@ -2,7 +2,7 @@
 # This scripts Enables the folowing option: Outlook -> File -> Options -> Programmatic Access Security > Never Warn
 
 $regPath = ".\SOFTWARE\Microsoft\Office\ClickToRun\REGISTRY\MACHINE\Software\Wow6432Node\Microsoft\Office\16.0\Outlook\Security"
-# Optional to log because windows sometimes removes this key. To enable remove # before $Loglocation and $Event
+# Optional to log because windows sometimes removes this key. To enable change loglocation and remove # before $Loglocation and $Event
 #$LogLocation = "[fullpath].csv"
 
 $Event = @()
