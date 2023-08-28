@@ -48,14 +48,3 @@ function Conform-FreeDiskSpace {
         return $false
     }
 }
-
-# Example usage
-$volumeName = "D"
-$requiredFreeSpaceGB = 100
-$result = Conform-FreeDiskSpace -DriveLetter $volumeName -RequiredFreeSpace $requiredFreeSpaceGB
-
-if ($result) {
-    Write-Host "Sufficient free space DriveLetter on volume '$volumeName'."
-} else {
-    Write-Host "Insufficient free space DriveLetter on volume '$volumeName'."
-}
