@@ -3,7 +3,6 @@ funtion Resize-FSLXContainer
 {
  [CmdletBinding()]
     param(
-
         [Parameter(Mandatory=$true, HelpMessage="The full path of the source file of the container")]
         [string]$Source,
     
@@ -17,11 +16,32 @@ funtion Resize-FSLXContainer
 
         [Parameter(Mandatory=$true, HelpMessage="For dynamic disk the input should be 1 and for a fixed disk it should be 0")]
         [ValidateSet(0,1)]
-        [smallint]$dynamic
-
-
+        [smallint]$Dynamic
     )
-    # location of the frx.exe.
+    # Start-Transcript -IncludeInvocationHeader
+    # Check if Destination is a vhd or vhdx
+    if (!($ImagePath -like "*.vhd" -or $ImagePath -like "*.vhdx")) 
+    {
+        do
+        {
+            $Anykey = Read-Host -Prompt "`n`n`nThe desination address does not have a .vhd or vhdx extention. Please adjust the destination path.`n`n`nPress 'q' to quit"
+            if($Anykey -match 'q'){Write-Host "Exit"}
+        } while($Anykey -notmatch 'q')
+    }
+
+
+    # Check that source and destination are diffirent
+
+    if(!($Source -match $Destination))
+    {
+        do
+        {
+            $Anykey = Read-Host -Prompt "`n`n`nThe desination address cannot be the same as the source. Please adjust the path of the source`n`n`nPress 'q' to quit"
+            if($Anykey -match 'q'){Write-Host "Exit"}
+        } while($Anykey -notmatch 'q')
+    }
+
+    # Check the location of the frx.exe.
     $frxpath = ".\C:\Program Files\FSLogix\Apps\frx.exe"
 
     if(!(Test-Path -Path $frxpath))
@@ -64,7 +84,7 @@ funtion Resize-FSLXContainer
     $sizeGB = $GigaByte + $ContainerSize
     $sizeMbs = $sizeGB * 1024
 
-    # This is a custom made function to test if there is enough space to continue this script.
+    # This is the start of a custom made function to test if there is enough space to continue this script. But you can remove /replace as you see fit. 
     Import-Module '\\fp01\it$\PScript\Functions\Function_Conform-FreeDiskspace.ps1'
     $EnoughDiskSpace = Conform-FreeDiskSpace -DriveLetter D -RequiredFreeSpace $sizeGB
     if(!$EnoughDiskSpace)
@@ -75,8 +95,17 @@ funtion Resize-FSLXContainer
             if($Anykey -match 'q'){Write-Host "Exit"}
         } while($Anykey -notmatch 'q')
     }
+    # end of custom module. 
 
     # Adjust the size the the vhd. 
-    try{$command = "$frxPath migrate-vhd -src ""$Source"" -dest ""$Destination"" -size-mbs=$sizeMbs -dynamic=$dynamic"}
-    catch{Write-Host "The folowing error occurred: $($_.Exception.Message)"}    
+    try
+    {
+        $command = "$frxPath migrate-vhd -src ""$Source"" -dest ""$Destination"" -size-mbs=$sizeMbs -dynamic=$dynamic"
+        # Invoke-Command $command
+    }
+    catch{Write-Host "The folowing error occurred: $($_.Exception.Message)"}
+    
+    # Return True if there is a file at the destination and false if there isn't. 
+    return Test-Path -Path $Destination   
+    #Stop-Transcript
 }
