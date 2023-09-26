@@ -66,10 +66,6 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
         } while($Anykey -notmatch 'q')
     }
 
-
-
-    #
-
     # Check if the source location is an actual virtual disk
     Write-Host ("Step 2: Check if the source in a virtual disk and get disk information.")
     if(Test-Path -Path $Source)
