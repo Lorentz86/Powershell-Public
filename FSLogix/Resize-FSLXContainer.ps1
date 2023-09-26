@@ -132,7 +132,7 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
     # Return True if there is a file at the destination and false if there isn't. 
     if($Replace)
     {
-        Write-Host ("`nStep 5: This step ")
+        Write-Host ("`nStep 5: This step is only here if you replace the vhd. Removeing and renaming the container.")
         
         if(Test-Path -Path $Destination )
         {
