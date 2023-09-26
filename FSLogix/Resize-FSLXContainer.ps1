@@ -106,7 +106,7 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
     # This is the start of a custom made function to test if there is enough space to continue this script. But you can remove /replace as you see fit. 
     Write-Host ("`nStep 3: Check if there is enough disk space.")
 
-    Import-Module '\\fp01\it$\PScript\Functions\Function_Conform-FreeDiskspace.ps1'
+    Import-Module '\\servername\it$\PScript\Functions\Function_Conform-FreeDiskspace.ps1'
     $EnoughDiskSpace = Conform-FreeDiskSpace -DriveLetter D -RequiredFreeSpace $EnoughSpace
     if(!$EnoughDiskSpace)
     {
