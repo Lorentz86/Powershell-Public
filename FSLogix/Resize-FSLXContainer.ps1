@@ -62,7 +62,7 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
         do
         {
             $Anykey = Read-Host -Prompt "`n`n`nfrx.exe not found please install FSLogix Tools or adjust path in script to correct location.`n`n`nPress 'q' to quit"
-            if($Anykey -match 'q'){Write-Host "Exit"}
+            if($Anykey -match 'q'){Exit 1}
         } while($Anykey -notmatch 'q')
     }
 
@@ -79,7 +79,7 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
             do
             {
                 $Anykey = Read-Host -Prompt "`n`n`nThe following error occurred: $($_.Exception.Message)`n`n`nPress 'q' to quit"
-                if($Anykey -match 'q'){Write-Host "Exit"}
+                if($Anykey -match 'q'){Exit 1}
             } while($Anykey -notmatch 'q')
         }
     }
@@ -88,7 +88,7 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
         do
         {
             $Anykey = Read-Host -Prompt "`n`n`nStep 2: Check if the source in a virtual disk and get disk information. `nNo VHD found. Please use a correct source path.`n`n`nPress 'q' to quit"
-            if($Anykey -match 'q'){Write-Host "Exit"}
+            if($Anykey -match 'q'){Exit 1}
         } while($Anykey -notmatch 'q')
     }
     
@@ -109,7 +109,7 @@ This example resizes the specified FSLogix Container VHDX file by adding 10GB of
         do
         {
             $Anykey = Read-Host -Prompt "`nNot enough disk space.`nPlease create more space.`n`n`nPress 'q' to quit"
-            if($Anykey -match 'q'){Write-Host "Exit"}
+            if($Anykey -match 'q'){Exit 1}
         } while($Anykey -notmatch 'q')
     }
     # end of custom module. 
