@@ -1,0 +1,56 @@
+function Get-FSLXContainerPath
+{
+    [CmdletBinding()]
+    <#
+    .SYNOPSIS
+    Get the full path of an FSLogix Container VHDX file based on the specified user and container type.
+
+    .DESCRIPTION
+    This script allows you to retrieve the full path of an FSLogix Container VHDX file based on the provided username and container type (either "profile" or "office"). It searches for the matching container file within the specified source directory.
+
+    .PARAMETER Source
+    Specifies the full path of the source directory where the FSLogix Container VHDX files are located.
+
+    .PARAMETER Username
+    Specifies the username for which you want to retrieve the container path.
+
+    .PARAMETER ContainerType
+    Specifies the type of container to retrieve, either "profile" or "office."
+
+    .EXAMPLE
+    Get-FSLXContainer -Source "D:\FSLogix" -Username "User123" -ContainerType "profile"
+
+    This example retrieves the full path of the profile container (Profile_User123.VHDX) for the user "User123" in the "D:\FSLogix" directory.
+
+    .EXAMPLE
+    Get-FSLXContainer -Source "E:\FSLogix" -Username "User456" -ContainerType "office"
+
+    This example retrieves the full path of the Office container (ODFC_User456.VHDX) for the user "User456" in the "E:\FSLogix" directory.
+
+    .NOTES
+    - Ensure that the specified source directory contains the FSLogix Container VHDX files.
+    - The script is case-sensitive when matching container names.
+    #>
+    param(
+        [Parameter(Mandatory=$true, HelpMessage="The full path of the source file of the container")]
+        [string]$Source,    
+
+        [Parameter(Mandatory=$true, HelpMessage="The user name of the containerpath you want.")]
+        [string]$Username,
+
+        [Parameter(Mandatory=$true, HelpMessage="Choose if you want to have the path of the office container or the profile container.")]
+        [ValidateSet("profile","office")]
+        [string]$containertype
+    )
+
+    if($containertype = "profile")
+    {
+        $Container = "Profile_" + $Username + ".VHDX"
+    }
+    else{
+        $Container = "ODFC_" + $Username + ".VHDX"
+    }   
+    
+    $containerpath = Get-ChildItem -Path $source -Recurse | Where-Object Name -match $Container | Select-Object Fullname
+    return $containerpath
+}
