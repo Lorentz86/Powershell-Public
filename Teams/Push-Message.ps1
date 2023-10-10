@@ -69,10 +69,10 @@ function Push-Message {
             '@type'      = 'MessageCard'
             '@context'   = 'http://schema.org/extensions'
             'summary'    = $Channel
-            'themeColor' = '00FF00'  # Change the theme color to green (you can use any valid color code)
+            'themeColor' = '00FF00'  
             'title'      = $Title
             'text'       = $Message
-            'fontFamily' = 'Arial, sans-serif'  # Change the font family to Arial or your preferred font
+            'fontFamily' = 'Arial, sans-serif'  # Change the font family 
         }
     }
 }
