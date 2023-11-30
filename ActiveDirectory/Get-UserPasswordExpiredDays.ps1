@@ -18,7 +18,7 @@ Function Get-UserPasswordExpiredDays {
        File: Get-UserPasswordExpiredDays.ps1
        Author: Your Name
        Version: 1.0
-       Last Updated: [Date]
+       Last Updated: [30-11-2023]
     #>
     param (
         [Parameter(Mandatory=$true, HelpMessage="The username")]
