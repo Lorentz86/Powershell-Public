@@ -1,6 +1,6 @@
 function Push-Message {
     [cmdletbinding()]
-    <#
+        <#
     .SYNOPSIS
         Sends a formatted message to a specified channel using Microsoft Teams webhook, with the ability to customize the message's appearance.
 
@@ -32,12 +32,11 @@ function Push-Message {
     .NOTES
         File Name: Push-Message.ps1
         Author: [Gijs van den Berg]
-        Version: 1.0
-        Last Modified: [04-10-2023]
+        Version: 1.1
+        Last Modified: [01-08-2024]
 
         This function is designed for sending formatted messages to Microsoft Teams channels using webhooks. Customize the appearance and content of your messages for various scenarios.
     #>
-
     param (
         [Parameter(Mandatory=$true, HelpMessage="Channel you want to send the message to")]  
         [ValidateSet('Update','Error','Security')]
@@ -58,43 +57,66 @@ function Push-Message {
         $MessageType = "default"
     )
 
-    # ChannelWebhooks 
+    # ChannelWebhooks
     $webhooks = @{
-        'Update'   = "teamswebhookurl.com"
-        'Security' = "teamswebhookurl.com"
-        'Error'    = "teamswebhookurl.com"
+        'Update'   = "webhook1.example.com"
+        'Security' = "webhook2.example.com"
+        'Error'    = "webhook3.example.com"
+    }
 
     $AdaptiveCards = @{
         'default' = @{
-            '@type'      = 'MessageCard'
-            '@context'   = 'http://schema.org/extensions'
-            'summary'    = $Channel
-            'themeColor' = '00FF00'  
-            'title'      = $Title
-            'text'       = $Message
-            'fontFamily' = 'Arial, sans-serif'  # Change the font family 
+            '$schema' = "http://adaptivecards.io/schemas/adaptive-card.json"
+            type = "AdaptiveCard"
+            version = "1.3"
+            body = @(
+                @{
+                    type = "TextBlock"
+                    size = "Medium"
+                    weight = "Bolder"
+                    text = $Title
+                },
+                @{
+                    type = "TextBlock"
+                    text = $Message
+                    wrap = $true
+                }
+            )
         }
     }
-}
 
-    # Validate MessageType
-    $CardJson = $AdaptiveCards[$MessageType] | ConvertTo-Json
+    $payload = @{
+        type = "message"
+        attachments = @(
+            @{
+                contentType = "application/vnd.microsoft.card.adaptive"
+                contentUrl = $null
+                content = $AdaptiveCards[$MessageType]
+            }
+        )
+    }
+
+    # Convert the payload to JSON format
+    $CardJson = $payload | ConvertTo-Json -Depth 10
+
+    # Debug output to check the JSON string
+    Write-Host "JSON Payload: $CardJson"
+
     $WebhookUrl = $webhooks[$Channel]
     $Headers = @{'Content-Type' = 'application/json'}
 
     # Return 
     $messageSend = 0
 
-    try
-    {
-        while($messageSend -ne 1)
-        {
-            $messageSend = Invoke-RestMethod -Uri $WebhookUrl -Method Post -Headers $Headers -Body $CardJson
+    try {
+        while ($messageSend -ne 1) {
+            $response = Invoke-RestMethod -Uri $WebhookUrl -Method Post -Headers $Headers -Body $CardJson
+            if ($response -ne $null) {
+                $messageSend = 1
+            }
+            Start-Sleep -Seconds 1
         }
+    } catch {
+        Write-Host "The following error occurred: $($_.Exception.Message)"
     }
-    catch
-    {
-        Write-Host "The following error occored $($_.Exception.Message)"
-    }   
 }
-

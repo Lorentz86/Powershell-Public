@@ -32,7 +32,7 @@ function Start-FullDatabaseBackup {
         [string] $DatabaseName,
 
         [Parameter(Mandatory=$true, HelpMessage="Local path of the backup")]
-        [ValidateScript({Test-Path $_ -and (Get-Item $_).PSIsContainer})]
+        [ValidateScript({(Test-Path $_) -and (Get-Item $_).PSIsContainer})]
         [string] $Path,
 
         [Parameter(Mandatory=$true, HelpMessage="Enable Logging")]  
