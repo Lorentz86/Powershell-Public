@@ -7,7 +7,7 @@ For implementing the powershell with teams webhooks you have to do the following
   1. Go to your Power Automate
   2. Choose to "Create" and look up the following template "Post to a channel when a webhook request is received" and choose the "Edit in advanced mode"
   3. Go to your Microsoft Teams and choose a channel you want to use. Click on the "..." on the top right corner of the channel and seletct "Get link to channel"
-  4. You are something like :  "https://teams.microsoft.com/l/channel/19%3Af812bunchofnumbers0thread.tacv2/UpdateFeeds?groupId=a82asomegroupidnumber0cccb&tenantId="  # edited this link 
+  4. You have something like :  "https://teams.microsoft.com/l/channel/19%3Af812bunchofnumbers0thread.tacv2/UpdateFeeds?groupId=a82asomegroupidnumber0cccb&tenantId="  # edited this link 
   5. In this link there are 2 items you need. The "groupdid" in my exaplme its "a82asomegroupidnumber0cccb" and the channel id so it's "19%3Af812bunchofnumbers0thread.tacv2" 
   6. In the advanced mode, select the "Post card in chat or channel"
   7. Copy the groupid into "Team" and the channel id into "Channel" 
