@@ -100,8 +100,6 @@ function Push-Message {
     $CardJson = $payload | ConvertTo-Json -Depth 10
 
     # Debug output to check the JSON string
-    Write-Host "JSON Payload: $CardJson"
-
     $WebhookUrl = $webhooks[$Channel]
     $Headers = @{'Content-Type' = 'application/json'}
 
