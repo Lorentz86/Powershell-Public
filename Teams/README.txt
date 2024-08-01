@@ -19,8 +19,8 @@ For implementing the powershell with teams webhooks you have to do the following
 In the script there is a default Adaptive Card. Its in the most simple form. You can add more cards as you see fit, but not every card is compatible with powershell. 
 You can use this site: https://www.adaptivecards.io/designer/ to make your adaptive card. In the script under
 $AdaptiveCards = @{
-'default' = @{#currentcard}
-'custom' = @{customcard}
+'default' = @{Current Json Payload in script}
+'custom' = @{Custom Json Payload}
 }
 Do change the parameter in the beginning of the script. 
 
