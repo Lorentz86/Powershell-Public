@@ -116,8 +116,8 @@ function Upload-ToAzureBlob {
     # Determining AzCopyLocation
     try {
         $AzCopyFileLocation = Get-ChildItem -Path $AzCopyDir
-        $env:Path += ";" + $AzCopyFileLocation
-        $env:AzCopyDir = $AzCopyFileLocation
+        $env:Path += ";" + $AzCopyFileLocation.FullName
+        $env:AzCopyDir = $AzCopyFileLocation.FullName
         if (!(Test-path "$env:AzCopyDir\azcopy.exe")) {
             throw "AzCopy executable not found in $env:AzCopyDir"
         }
