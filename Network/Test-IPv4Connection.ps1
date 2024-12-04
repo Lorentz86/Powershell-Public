@@ -1,3 +1,4 @@
+# Powershell 7.1+
 function Test-IPv4Connection {
     param (
         [Parameter(Mandatory=$true)]
