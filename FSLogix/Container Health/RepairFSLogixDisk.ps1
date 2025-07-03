@@ -4,10 +4,10 @@
 
 param (
     [Parameter(Mandatory = $false)]
-    [string]$FolderPath = "C:\Path\To\Your\VHDs",
+    [string]$FolderPath,
 
     [Parameter(Mandatory = $false)]
-    [string]$ConnectionBroker = "YourConnectionBroker",
+    [string]$ConnectionBroker,
 
     [Parameter(Mandatory = $false)]
     [string]$TargetUser,
@@ -33,6 +33,13 @@ if ($TargetVHDXPath) {
     $vdiskFiles = Get-Item -Path $TargetVHDXPath
 } else {
     $vdiskFiles = Get-ChildItem -Recurse -Path $FolderPath -Filter *.vhdx -File
+}
+
+if ($TargetUser) {
+    Write-Host "Targeting VHDX files for user: $TargetUser"
+    $vdiskFiles = $vdiskFiles | Where-Object { $_.Name -like "*$TargetUser*" }
+} else {
+    Write-Host "No specific user targeted."
 }
 
 <# 
