@@ -58,7 +58,7 @@ $vdiskFiles | ForEach-Object {
         return
     }
     # Check if user is nog logged on
-    if (-not (Get-RDSUserSession -Username $username -ConnectionBroker "Your Connection Broker")) {
+    if (-not (Get-RDSUserSession -Username $username -ConnectionBroker $ConnectionBroker)) {
         try {
             Write-Host "User '$username' is not logged on. Starting repair for this VHDX file."
             $DriveLetter = Get-AvailableDriveLetter
