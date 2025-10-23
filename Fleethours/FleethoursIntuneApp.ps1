@@ -11,7 +11,7 @@ param(
     [string]$sourcePath     = 'C:\intune\Input Fleethours',
     [string]$outputPath     = 'C:\intune\output Fleethours'
 )
-Set-infoemationPreference -InformationAction Continue
+$InformationPreference = "continue"
 Write-Information "=== Fleethours Intune App Packaging ===" -InformationAction Continue
 Write-Information "Preparation Tool: $prepToolPath" -InformationAction Continue
 Write-Information "Source Path: $sourcePath" -InformationAction Continue
@@ -49,9 +49,11 @@ foreach ($script in @($installScript, $uninstallScript)) {
     }
 }
 
+$installScriptpath = Join-Path -Path $sourcePath -ChildPath $installScript
+$uninstallScript = Join-Path -Path $sourcePath -ChildPath $uninstallScript
 # Run the packaging tool
 Write-Information "Creating Intune Win App package..." -InformationAction Continue
-& $prepToolPath -c -s $sourcePath -o $outputPath
+& $prepToolPath -c "$sourcepath" -s "$installScriptpath" -o "$outputPath"
 
 Write-Information "Intune Win App package created successfully in '$outputPath'."
 Write-Information "=== Fleethours Intune App packaging process completed ==="
