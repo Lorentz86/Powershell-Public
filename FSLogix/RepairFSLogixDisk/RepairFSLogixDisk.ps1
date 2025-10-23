@@ -4,10 +4,10 @@
 
 param (
     [Parameter(Mandatory = $false)]
-    [string]$FolderPath = "C:\Path\To\Your\VHDs",
+    [string]$FolderPath,
 
     [Parameter(Mandatory = $false)]
-    [string]$ConnectionBroker = "YourConnectionBroker",
+    [string]$ConnectionBroker,
 
     [Parameter(Mandatory = $false)]
     [string]$TargetUser,
@@ -35,6 +35,13 @@ if ($TargetVHDXPath) {
     $vdiskFiles = Get-ChildItem -Recurse -Path $FolderPath -Filter *.vhdx -File
 }
 
+if ($TargetUser) {
+    Write-Host "Targeting VHDX files for user: $TargetUser"
+    $vdiskFiles = $vdiskFiles | Where-Object { $_.Name -like "*$TargetUser*" }
+} else {
+    Write-Host "No specific user targeted."
+}
+
 <# 
    I use Get-UsernameFromVHDXFile as a "custom function". I use the flip flop user names and drives FSLogix GPO. So i get ODFC_Username.vhdx and Profile_Username.vhdx
    If you use a different naming convention, you can change the function to suit your needs.
@@ -51,7 +58,7 @@ $vdiskFiles | ForEach-Object {
         return
     }
     # Check if user is nog logged on
-    if (-not (Get-RDSUserSession -Username $username -ConnectionBroker "Your Connection Broker")) {
+    if (-not (Get-RDSUserSession -Username $username -ConnectionBroker $ConnectionBroker)) {
         try {
             Write-Host "User '$username' is not logged on. Starting repair for this VHDX file."
             $DriveLetter = Get-AvailableDriveLetter
